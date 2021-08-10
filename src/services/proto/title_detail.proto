@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+message Response {
+    SuccessResult success = 1;
+    ErrorResult error = 2;
+}
+
+message ErrorResult {
+    enum Action {
+        DEFAULT = 0;
+        UNAUTHORIZED = 1;
+        MAINTENANCE = 2;
+        GEOIP_BLOCKING = 3;
+    }
+    Action action = 1;
+    string debugInfo = 4;
+}
+
+message SuccessResult {
+    TitleDetailView titleDetailView = 8;
+}
+
+message TitleDetailView {
+    Title title = 1;
+    string titleImageUrl = 2;
+    string overview = 3;
+    string backgroundImageUrl = 4;
+    uint32 nextTimestamp = 5;
+    uint32 updateTiming = 6;
+    string viewingPeriodDescription = 7;
+    string nonAppearanceInfo = 8;
+    repeated Chapter firstChapterList = 9;
+    repeated Chapter lastChapterList = 10;
+    bool chaptersDescending = 17;
+}
+
+message Title {
+    uint32 titleId = 1;
+    string name = 2;
+    string author = 3;
+    string portraitImageUrl = 4;
+    string landscapeImageUrl = 5;
+    uint32 viewCount = 6;
+    enum Language {
+        ENGLISH = 0;
+        SPANISH = 1;
+    }
+    Language language = 7;
+}
+
+message Chapter {
+    uint32 titleId = 1;
+    uint32 chapterId = 2;
+    string name = 3;
+    string subTitle = 4;
+    string thumbnailUrl = 5;
+    uint32 startTimeStamp = 6;
+    uint32 endTimeStamp = 7;
+    bool alreadyViewed = 8;
+    bool isVerticalOnly = 9;
+}

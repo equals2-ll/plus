@@ -1,0 +1,160 @@
+100003:
+  manga_name: Black Clover
+  subreddit: BlackClover
+  is_nsfw: false
+  is_completed: false
+100006:
+  manga_name: 'Boruto: Naruto Next Generations'
+  subreddit: Naruto
+  is_nsfw: false
+  is_completed: false
+100010:
+  manga_name: Dr. STONE
+  subreddit: DrStone
+  is_nsfw: false
+  is_completed: false
+100012:
+  manga_name: Dragon Ball Super
+  subreddit: dbz
+  is_nsfw: false
+  is_completed: false
+100017:
+  manga_name: My Hero Academia
+  subreddit: BokuNoHeroAcademia
+  is_nsfw: false
+  is_completed: false
+100020:
+  manga_name: One Piece
+  subreddit: OnePiece
+  is_nsfw: false
+  is_completed: false
+100024:
+  manga_name: 'Seraph of the End: Vampire Reign'
+  subreddit: OwarinoSeraph
+  is_nsfw: false
+  is_completed: false
+100028:
+  manga_name: World Trigger
+  subreddit: worldtrigger
+  is_nsfw: false
+  is_completed: false
+100034:
+  manga_name: Jujutsu Kaisen
+  subreddit: JuJutsuKaisen
+  is_nsfw: false
+  is_completed: false
+100056:
+  manga_name: SPY x FAMILY
+  subreddit: SpyxFamily
+  is_nsfw: false
+  is_completed: false
+100068:
+  manga_name: 'Mission: Yozakura Family'
+  subreddit: MissionYozakuraFamily
+  is_nsfw: false
+  is_completed: false
+100071:
+  manga_name: "'Tis Time for \"Torture,\" Princess"
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100078:
+  manga_name: Twin Star Exorcists
+  subreddit: TwinStarExorcists
+  is_nsfw: false
+  is_completed: false
+100081:
+  manga_name: UNDEAD UNLUCK
+  subreddit: UndeadUnluck
+  is_nsfw: false
+  is_completed: false
+100083:
+  manga_name: 'Mashle: Magic and Muscles'
+  subreddit: MASHLE
+  is_nsfw: false
+  is_completed: false
+100099:
+  manga_name: Ayakashi Triangle
+  subreddit: AyakashiTriangle
+  is_nsfw: true
+  is_completed: false
+100102:
+  manga_name: 'Magu-chan: God of Destruction'
+  subreddit: MaguChan
+  is_nsfw: false
+  is_completed: false
+100108:
+  manga_name: Me & Roboco
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100110:
+  manga_name: 'Monster #8'
+  subreddit: KaijuNo8
+  is_nsfw: false
+  is_completed: false
+100114:
+  manga_name: Excuse me dentist, it's touching me!
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100116:
+  manga_name: Hokkaido Gals Are Super Adorable!
+  subreddit: DosankoGyaru
+  is_nsfw: false
+  is_completed: false
+100117:
+  manga_name: 'High School Family: Kokosei Kazoku'
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100127:
+  manga_name: SAKAMOTO DAYS
+  subreddit: SakamotoDays
+  is_nsfw: false
+  is_completed: false
+100139:
+  manga_name: The Elusive Samurai
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100145:
+  manga_name: WITCH WATCH
+  subreddit: WitchWatch
+  is_nsfw: false
+  is_completed: false
+100146:
+  manga_name: Don't Blush, Sekime-san!
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100157:
+  manga_name: Blue Box
+  subreddit: FreeBlueBox
+  is_nsfw: false
+  is_completed: false
+100159:
+  manga_name: Candy Flurry
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100165:
+  manga_name: 'The Hunters Guild: Red Hood'
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100166:
+  manga_name: 'Neru: Way of the Martial Artist'
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100005:
+  manga_name: Blue Exorcist
+  subreddit: AoNoExorcist
+  is_nsfw: false
+  is_completed: true
+100160:
+  manga_name: Choujin X
+  subreddit: ChoujinX
+  is_nsfw: false
+  is_completed: true
