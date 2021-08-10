@@ -58,7 +58,7 @@ def _find_mangaplus_chapters(config, db):
                 reddit_post_title,reddit_post_link=_process_into_reddit_post(config,db,Manga,Chapters)
                 info(f"Reddit Post Title: {reddit_post_title}")
                 info(f"Reddit Post Link: {reddit_post_link}")
-                submission=reddit.submit_link_post(reddit_post_title,reddit_post_link,config.subreddit)
+                submission=reddit.submit_link_post(reddit_post_title,reddit_post_link,config.subreddit,manga.is_nsfw)
 
 
                 reddit_comment_body,youpoll_id=_process_into_reddit_comment(config,db,y,reddit_post_title,manga)
@@ -116,6 +116,7 @@ def _update_next_update_time(config,db,mangas):
             if Manga.next_update_time != manga.next_update_time:
                 info(f"Updating {Manga.manga_name}  Next Update Time:{datetime.fromtimestamp(Manga.next_update_time)}")
                 db.update_manga(next_update_time=Manga.next_update_time)
+        time.sleep(3)
 
 
 

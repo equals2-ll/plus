@@ -24,11 +24,11 @@ def _ensure_connection():
 		_r = _connect_reddit()
 	return _r is not None
 
-def submit_link_post(title,url,subreddit):
+def submit_link_post(title,url,subreddit,nsfw):
     _ensure_connection()
     try:
         info(f"Submitting post '{title}'    {url}")
-        submission=_r.subreddit(subreddit).submit(title,url=url)
+        submission=_r.subreddit(subreddit).submit(title,url=url,nsfw=bool(nsfw))
         return submission
     except:
         exception("Failed to submit post")

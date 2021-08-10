@@ -92,11 +92,3 @@ class MangaplusService():
     def get_chapter_detail(self):
 
         return MangaplusChapter(self._proto_blob).get_latest_chapter_detail()
-
-
-# if __name__=='__main__':
-#     m = MangaplusService()
-#     resp = m.request_from_api(100017)
-#     if resp:
-#         # manga_name,next_update_time,is_completed=m.get_manga_detail()
-#         chapter_list=m.get_chapter_detail()
