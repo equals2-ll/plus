@@ -1,5 +1,6 @@
 # Plus
 Mangaplus chapter discussion bot for [/r/manga](https://reddit.com/r/manga/). Still unofficial. T_T
+
 Automate posting newly published chapters to Reddit. 
 
 Currently operates under the account [/u/AutoShonenpon](https://www.reddit.com/user/AutoShonenpon/).
@@ -47,5 +48,6 @@ subreddit =
 5. The bot is now ready to post threads with `python src/plus.py`
 
 ## Upcoming features
+
 1. Automate manga popularity chart 
 2. Upon multiple requests by users, discord automate posting 
