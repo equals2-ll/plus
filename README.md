@@ -44,7 +44,7 @@ subreddit =
 
 2. Set up the database by running `python src/plus.py -m setup`
 3. Load the desired manga config files by running `python src/plus.py -m edit mangaplus.yaml`
-4. Update the show information by running `python src/plus.py -m update`
+4. Update manga information by running `python src/plus.py -m update`
 5. The bot is now ready to post threads with `python src/plus.py`
 
 ## Upcoming features
