@@ -28,7 +28,7 @@ def main(config, db, **kwargs):
         #     pass
     else:
         schedule.every().hour.at(":00").do(_find_mangaplus_chapters,config,db)
-        schedule.every().day.at("21:00").do(_update_mangaplus_hiatus_manga,config,db)
+        schedule.every().day.at("23:30").do(_update_mangaplus_hiatus_manga,config,db)
         schedule.every().friday.at("22:00").do(_update_mangaplus_manga,config,db)
         # _find_mangaplus_chapters(config,db)
         while True:
