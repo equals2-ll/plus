@@ -96,10 +96,10 @@ class PlusDatabase:
     def get_mangas(self, completed=False, current_time=None,all=False) -> List[Manga]:
         mangas = list()
 
-        if (current_time is not None) and not completed:
+        if (current_time is not None):
             self.q.execute("""SELECT manga_id,manga_name,subreddit,next_update_time,is_completed,is_nsfw 
-                FROM Manga WHERE next_update_time < ? AND is_completed = 0 ORDER BY next_update_time ASC
-            """, (datetime.timestamp(current_time+timedelta(minutes=5)),))
+                FROM Manga WHERE next_update_time BETWEEN ? AND ? ORDER BY next_update_time ASC
+            """, (datetime.timestamp(current_time-timedelta(minutes=5)),datetime.timestamp(current_time+timedelta(minutes=5))))
             for manga in self.q.fetchall():
                 mangas.append(Manga(*manga))
 
