@@ -1,7 +1,7 @@
 from datetime import datetime
 import sys
-if sys.version_info[0] != 3 or sys.version_info[1] < 8:
-	print("Plus requires Python version 3.8 or greater")
+if sys.version_info[0] != 3 or sys.version_info[1] < 7:
+	print("Plus requires Python version 3.7 or greater")
 	sys.exit(1)
 
 # Metadata
