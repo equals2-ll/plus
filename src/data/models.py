@@ -26,7 +26,7 @@ class Manga:
 class Chapter:
     chapter_id:int
     chapter_name:str
-    chapter_number:int
+    chapter_number:float
     youpoll_id:str = field(default='')
     reddit_post_id:str = field(default='')
     reddit_comment_id:str = field(default='')

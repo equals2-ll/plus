@@ -59,7 +59,7 @@ class MangaplusChapter(MangaplusManga):
         if chapter.name == "ex":
             chapter_number = 0  # Remember to convert back to Extra Chapter while creating reddit title
         else:
-            chapter_number = int(chapter.name.lstrip('#'))
+            chapter_number = float(chapter.name.lstrip('#'))
 
         self._chapters.append(Chapter(chapter_id=chapter.chapterId,
                               chapter_name=chapter.subTitle, chapter_number=chapter_number,manga_id=self._detail.title.titleId))

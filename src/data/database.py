@@ -72,7 +72,7 @@ class PlusDatabase:
         self.q.execute("""CREATE TABLE IF NOT EXISTS Chapter (
             chapter_id          INTEGER NOT NULL PRIMARY KEY,
             chapter_name        TEXT NOT NULL,
-            chapter_number      INTEGER NOT NULL,
+            chapter_number      REAL NOT NULL,
             youpoll_id          INTEGER NOT NULL,
             reddit_post_id      TEXT NOT NULL,
             reddit_comment_id   TEXT NOT NULL,
@@ -140,9 +140,7 @@ class PlusDatabase:
     def get_chapters(self, manga_id=None) -> List[Chapter]:
         chapters = list()
         if manga_id is not None:
-            self.q.execute("""SELECT chapter_id,chapter_name,chapter_number,youpoll_id,reddit_post_id,reddit_comment_id,manga
-                FROM Chapter WHERE manga = ?
-            """, (manga_id,))
+            self.q.execute("SELECT * FROM Chapter WHERE manga = ?", (manga_id,))
         else:
             self.q.execute("SELECT * FROM Chapter")
 

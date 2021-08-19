@@ -75,13 +75,13 @@ def _find_mangaplus_chapters(config, db):
 
 
 def _process_into_reddit_post(config,db,Manga,Chapters):
-    chapter_number ="Extra Chapter" if Chapters[0].chapter_number == 0 else Chapters[0].chapter_number #Revert back to Extra Chapter due to data class constraint
+    chapter_number ="Extra Chapter" if Chapters[0].chapter_number == 0 else f"{Chapters[0].chapter_number:g}" #Revert back to Extra Chapter due to data class constraint
 
     reddit_post_title=reddit_post_title_format.format(manga_name=Manga.manga_name,chapter_number=chapter_number)
     reddit_post_link=reddit_post_link_format.format(chapter_id=Chapters[0].chapter_id)
 
     if len(Chapters)>1:
-        reddit_post_title+=f" & {'Extra Chapter' if Chapters[1].chapter_number == 0 else Chapters[1].chapter_number }"
+        reddit_post_title+=f" & {'Extra Chapter' if Chapters[1].chapter_number == 0 else f'{Chapters[1].chapter_number:g}' }"
 
     return reddit_post_title,reddit_post_link
 
