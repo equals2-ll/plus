@@ -105,7 +105,7 @@ class PlusDatabase:
 
         elif not completed and not all:
             self.q.execute("""SELECT manga_id,manga_name,subreddit,next_update_time,is_completed,is_nsfw 
-                FROM Manga WHERE is_completed = 0
+                FROM Manga WHERE is_completed = 0 ORDER BY next_update_time ASC
             """)
             for manga in self.q.fetchall():
                 mangas.append(Manga(*manga))
