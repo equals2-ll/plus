@@ -82,7 +82,7 @@ def _manual_input(manga_id):
 
 def _load_from_mangaplus(manga_id):
     m = mangaplus.MangaplusService()
-    resp = m.request_from_api(manga_id)
+    resp = m.request_from_api(manga_id=manga_id)
     if resp:
         return m.get_manga_detail()
 

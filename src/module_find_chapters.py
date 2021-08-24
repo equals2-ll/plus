@@ -31,10 +31,25 @@ def main(config, db, **kwargs):
         schedule.every().day.at("23:30").do(_update_mangaplus_hiatus_manga,config,db)
         schedule.every().friday.at("22:00").do(_update_mangaplus_manga,config,db)
         # _find_mangaplus_chapters(config,db)
+        # test(config,db)
         while True:
             schedule.run_pending()
             time.sleep(1)
             
+# def test(config,db):
+#     chapters = db.get_chapters()
+#     chapter_ids = [chapter.chapter_id for chapter in chapters]
+#     m = mangaplus.MangaplusService()
+
+#     resp=m.request_from_api(manga_id=100171)
+#     if resp:
+#         Manga = m.get_manga_detail()
+#         Chapters = m.get_chapter_detail()
+
+#         if Chapters[0].chapter_id not in chapter_ids or ignore_chapter_id:
+#             reddit_post_title,reddit_post_link=_process_into_reddit_post(config,db,Manga,Chapters)
+#             info(f"Reddit Post Title: {reddit_post_title}")
+#             info(f"Reddit Post Link: {reddit_post_link}")
 
 
 def _find_mangaplus_chapters(config, db):
@@ -49,7 +64,7 @@ def _find_mangaplus_chapters(config, db):
     y = youpoll.YouPoll()
 
     for manga in mangas:
-        resp=m.request_from_api(manga.manga_id)
+        resp=m.request_from_api(manga_id=manga.manga_id)
         if resp:
             Manga = m.get_manga_detail()
             Chapters = m.get_chapter_detail()
@@ -110,7 +125,7 @@ def _update_mangaplus_manga(config,db):
 def _update_next_update_time(config,db,mangas):
     m = mangaplus.MangaplusService()
     for manga in mangas:
-        resp=m.request_from_api(manga.manga_id)
+        resp=m.request_from_api(manga_id=manga.manga_id)
         if resp:
             Manga = m.get_manga_detail()
             if Manga.next_update_time != manga.next_update_time:
