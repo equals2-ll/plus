@@ -1,5 +1,49 @@
 syntax = "proto3";
 
+message MangaDetail {
+    Manga manga = 1;
+    string manga_image_url = 2;
+    string overview = 3;
+    string background_image_url = 4;
+    uint32 next_timestamp = 5;
+    uint32 update_timing = 6;
+    string viewing_period_description = 7;
+    string non_appearance_info = 8;
+    repeated Chapter first_chapter_list = 9;
+    repeated Chapter last_chapter_list = 10;
+    bool chapters_descending = 17;
+}
+
+message Manga {
+    uint32 manga_id = 1;
+    string manga_name = 2;
+    string author = 3;
+    string portrait_image_url = 4;
+    string landscape_image_url = 5;
+    uint32 view_count = 6;
+    enum Language {
+        ENGLISH = 0;
+        SPANISH = 1;
+        INDONESIAN = 3;
+        PORTUGUESE = 4;
+        RUSSIAN = 5;
+        THAI = 6;
+    }
+    Language language = 7;
+}
+
+message Chapter {
+    uint32 manga_id = 1;
+    uint32 chapter_id = 2;
+    string chapter_number = 3;
+    string chapter_name = 4;
+    string thumbnail_url = 5;
+    uint32 start_timestamp = 6;
+    uint32 end_timestamp = 7;
+    bool already_viewed = 8;
+    bool is_vertical_only = 9;
+}
+
 message Response {
     SuccessResult success = 1;
     ErrorResult error = 2;
@@ -17,45 +61,5 @@ message ErrorResult {
 }
 
 message SuccessResult {
-    TitleDetailView titleDetailView = 8;
-}
-
-message TitleDetailView {
-    Title title = 1;
-    string titleImageUrl = 2;
-    string overview = 3;
-    string backgroundImageUrl = 4;
-    uint32 nextTimestamp = 5;
-    uint32 updateTiming = 6;
-    string viewingPeriodDescription = 7;
-    string nonAppearanceInfo = 8;
-    repeated Chapter firstChapterList = 9;
-    repeated Chapter lastChapterList = 10;
-    bool chaptersDescending = 17;
-}
-
-message Title {
-    uint32 titleId = 1;
-    string name = 2;
-    string author = 3;
-    string portraitImageUrl = 4;
-    string landscapeImageUrl = 5;
-    uint32 viewCount = 6;
-    enum Language {
-        ENGLISH = 0;
-        SPANISH = 1;
-    }
-    Language language = 7;
-}
-
-message Chapter {
-    uint32 titleId = 1;
-    uint32 chapterId = 2;
-    string name = 3;
-    string subTitle = 4;
-    string thumbnailUrl = 5;
-    uint32 startTimeStamp = 6;
-    uint32 endTimeStamp = 7;
-    bool alreadyViewed = 8;
-    bool isVerticalOnly = 9;
+    MangaDetail manga_detail = 8;
 }
