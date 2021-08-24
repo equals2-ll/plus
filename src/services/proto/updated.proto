@@ -3,7 +3,7 @@ syntax = "proto3";
 
 message MangaDetail{
     uint32 manga_id = 1;
-    string name = 2;
+    string manga_name = 2;
     string author = 3;
     string portrait_image_url = 4;
     string landscape_image_url = 5;

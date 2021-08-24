@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rupdated.proto\"\x90\x02\n\x0bMangaDetail\x12\x10\n\x08manga_id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06\x61uthor\x18\x03 \x01(\t\x12\x1a\n\x12portrait_image_url\x18\x04 \x01(\t\x12\x1b\n\x13landscape_image_url\x18\x05 \x01(\t\x12\x12\n\nview_count\x18\x06 \x01(\r\x12\'\n\x08language\x18\x07 \x01(\x0e\x32\x15.MangaDetail.Language\"[\n\x08Language\x12\x0b\n\x07\x45NGLISH\x10\x00\x12\x0b\n\x07SPANISH\x10\x01\x12\x0e\n\nINDONESIAN\x10\x03\x12\x0e\n\nPORTUGUESE\x10\x04\x12\x0b\n\x07RUSSIAN\x10\x05\x12\x08\n\x04THAI\x10\x06\"E\n\x05Manga\x12\"\n\x0cmanga_detail\x18\x01 \x01(\x0b\x32\x0c.MangaDetail\x12\x18\n\x10upload_timestamp\x18\x02 \x01(\t\" \n\x07Updated\x12\x15\n\x05manga\x18\x01 \x03(\x0b\x32\x06.Manga\"H\n\x08Response\x12\x1f\n\x07success\x18\x01 \x01(\x0b\x32\x0e.SuccessResult\x12\x1b\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x0c.ErrorResult\"\x93\x01\n\x0b\x45rrorResult\x12#\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32\x13.ErrorResult.Action\x12\x11\n\tdebugInfo\x18\x04 \x01(\t\"L\n\x06\x41\x63tion\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x00\x12\x10\n\x0cUNAUTHORIZED\x10\x01\x12\x0f\n\x0bMAINTENANCE\x10\x02\x12\x12\n\x0eGEOIP_BLOCKING\x10\x03\"*\n\rSuccessResult\x12\x19\n\x07updated\x18\x14 \x01(\x0b\x32\x08.Updatedb\x06proto3'
+  serialized_pb=b'\n\rupdated.proto\"\x96\x02\n\x0bMangaDetail\x12\x10\n\x08manga_id\x18\x01 \x01(\r\x12\x12\n\nmanga_name\x18\x02 \x01(\t\x12\x0e\n\x06\x61uthor\x18\x03 \x01(\t\x12\x1a\n\x12portrait_image_url\x18\x04 \x01(\t\x12\x1b\n\x13landscape_image_url\x18\x05 \x01(\t\x12\x12\n\nview_count\x18\x06 \x01(\r\x12\'\n\x08language\x18\x07 \x01(\x0e\x32\x15.MangaDetail.Language\"[\n\x08Language\x12\x0b\n\x07\x45NGLISH\x10\x00\x12\x0b\n\x07SPANISH\x10\x01\x12\x0e\n\nINDONESIAN\x10\x03\x12\x0e\n\nPORTUGUESE\x10\x04\x12\x0b\n\x07RUSSIAN\x10\x05\x12\x08\n\x04THAI\x10\x06\"E\n\x05Manga\x12\"\n\x0cmanga_detail\x18\x01 \x01(\x0b\x32\x0c.MangaDetail\x12\x18\n\x10upload_timestamp\x18\x02 \x01(\t\" \n\x07Updated\x12\x15\n\x05manga\x18\x01 \x03(\x0b\x32\x06.Manga\"H\n\x08Response\x12\x1f\n\x07success\x18\x01 \x01(\x0b\x32\x0e.SuccessResult\x12\x1b\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x0c.ErrorResult\"\x93\x01\n\x0b\x45rrorResult\x12#\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32\x13.ErrorResult.Action\x12\x11\n\tdebugInfo\x18\x04 \x01(\t\"L\n\x06\x41\x63tion\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x00\x12\x10\n\x0cUNAUTHORIZED\x10\x01\x12\x0f\n\x0bMAINTENANCE\x10\x02\x12\x12\n\x0eGEOIP_BLOCKING\x10\x03\"*\n\rSuccessResult\x12\x19\n\x07updated\x18\x14 \x01(\x0b\x32\x08.Updatedb\x06proto3'
 )
 
 
@@ -64,8 +64,8 @@ _MANGADETAIL_LANGUAGE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=199,
-  serialized_end=290,
+  serialized_start=205,
+  serialized_end=296,
 )
 _sym_db.RegisterEnumDescriptor(_MANGADETAIL_LANGUAGE)
 
@@ -99,8 +99,8 @@ _ERRORRESULT_ACTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=543,
-  serialized_end=619,
+  serialized_start=549,
+  serialized_end=625,
 )
 _sym_db.RegisterEnumDescriptor(_ERRORRESULT_ACTION)
 
@@ -121,7 +121,7 @@ _MANGADETAIL = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='MangaDetail.name', index=1,
+      name='manga_name', full_name='MangaDetail.manga_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -176,7 +176,7 @@ _MANGADETAIL = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=18,
-  serialized_end=290,
+  serialized_end=296,
 )
 
 
@@ -214,8 +214,8 @@ _MANGA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=292,
-  serialized_end=361,
+  serialized_start=298,
+  serialized_end=367,
 )
 
 
@@ -246,8 +246,8 @@ _UPDATED = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=363,
-  serialized_end=395,
+  serialized_start=369,
+  serialized_end=401,
 )
 
 
@@ -285,8 +285,8 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=397,
-  serialized_end=469,
+  serialized_start=403,
+  serialized_end=475,
 )
 
 
@@ -325,8 +325,8 @@ _ERRORRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=472,
-  serialized_end=619,
+  serialized_start=478,
+  serialized_end=625,
 )
 
 
@@ -357,8 +357,8 @@ _SUCCESSRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=621,
-  serialized_end=663,
+  serialized_start=627,
+  serialized_end=669,
 )
 
 _MANGADETAIL.fields_by_name['language'].enum_type = _MANGADETAIL_LANGUAGE
