@@ -115,7 +115,7 @@ def _update_next_update_time(config,db,mangas):
             Manga = m.get_manga_detail()
             if Manga.next_update_time != manga.next_update_time:
                 info(f"Updating {Manga.manga_name}  Next Update Time:{datetime.fromtimestamp(Manga.next_update_time)}")
-                db.update_manga(next_update_time=Manga.next_update_time)
+                db.update_manga(Manga.manga_id,next_update_time=Manga.next_update_time)
         time.sleep(3)
 
 
