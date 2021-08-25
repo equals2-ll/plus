@@ -152,9 +152,9 @@ class PlusDatabase:
     @db_error_default(list())
     def get_chapter_ids(self) -> List:
         self.q.execute("SELECT chapter_id FROM Chapter")
-        chapters=[chapter_id[0] for chapter_id in self.q.fetchall()]
+        chapter_ids=[chapter_id[0] for chapter_id in self.q.fetchall()]
         
-        return chapters
+        return chapter_ids
 
     @db_error
     def add_manga(self, manga_id, manga_name, subreddit, next_update_time, is_completed, is_nsfw, commit=True):
