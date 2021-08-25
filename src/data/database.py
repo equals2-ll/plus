@@ -139,6 +139,7 @@ class PlusDatabase:
     @db_error_default(list())
     def get_chapters(self, manga_id=None) -> List[Chapter]:
         chapters = list()
+        
         if manga_id is not None:
             self.q.execute("SELECT * FROM Chapter WHERE manga = ?", (manga_id,))
         else:
@@ -146,6 +147,13 @@ class PlusDatabase:
 
         for chapter in self.q.fetchall():
             chapters.append(Chapter(*chapter))
+        return chapters
+    
+    @db_error_default(list())
+    def get_chapter_ids(self) -> List:
+        self.q.execute("SELECT chapter_id FROM Chapter")
+        chapters=[chapter_id[0] for chapter_id in self.q.fetchall()]
+        
         return chapters
 
     @db_error
