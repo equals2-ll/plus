@@ -5,14 +5,14 @@ from typing import Optional, List
 import requests
 import http.client
 
-import services.proto.title_detail_pb2 as title_detail_pb
+import services.proto.response_pb2 as response_pb
 from data.models import Manga, Chapter
 
 
 
 class MangaplusManga:
     def __init__(self, response_proto):
-        response = title_detail_pb.Response()
+        response = response_pb.Response()
         response.ParseFromString(response_proto)
         self._detail = response.success.manga_detail
 
@@ -64,7 +64,22 @@ class MangaplusChapter(MangaplusManga):
         self._chapters.append(Chapter(chapter_id=chapter.chapter_id,
                               chapter_name=chapter.chapter_name, chapter_number=chapter_number,manga_id=self._detail.manga.manga_id))
 
+class MangaplusUpdated:
+    def __init__(self, response_proto):
+        response = response_pb.Response()
+        response.ParseFromString(response_proto)
+        self._updated = response.success.updated
+        self._updated_manga_ids=list()
+    
+    def get_updated_manga(self,manga_re_edtion_ids) -> List:
+        for manga in self._updated.updated_manga_detail:
+            if manga.updated_manga.language == 0 and int(manga.upload_timestamp)> datetime.timestamp(datetime.now()-timedelta(minutes=5)) and manga.updated_manga.manga_id not in manga_re_edtion_ids:
+                manga_id=manga.updated_manga.manga_id
+                manga_name=manga.updated_manga.manga_name
+                info(f"New manga found: {manga_id}   {manga_name}")
+                self._updated_manga_ids.append(manga_id)
 
+        return self._updated_manga_ids
 class MangaplusService():
     def __init__(self):
         self._base_api_url = "https://jumpg-webapi.tokyo-cdn.com"
@@ -93,3 +108,7 @@ class MangaplusService():
     def get_chapter_detail(self):
 
         return MangaplusChapter(self._proto_blob).get_latest_chapter_detail()
+    
+    def get_update_new_manga(self,manga_re_edtion_ids):
+        
+        return MangaplusUpdated(self._proto_blob).get_updated_manga(manga_re_edtion_ids)

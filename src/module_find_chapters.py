@@ -37,10 +37,16 @@ def main(config, db, **kwargs):
             time.sleep(1)
             
 def test(config,db):
-    print(db.get_manga_re_edition(ids_only=True))
+    manga_re_edtion_ids=db.get_manga_re_edition(ids_only=True)
+    manga_re_edtion_ids.extend(db.get_manga_ids())
+    m = mangaplus.MangaplusService()
+
+    resp=m.request_from_api(updated=True)
+    if resp:
+        updated_manga_ids=m.get_update_new_manga(manga_re_edtion_ids)
+        print(updated_manga_ids)
     # chapter_ids=db.get_chapter_ids()
     # print(chapter_ids)
-    # m = mangaplus.MangaplusService()
 
     # resp=m.request_from_api(manga_id=100171)
     # if resp:
@@ -90,13 +96,13 @@ def _find_mangaplus_chapters(config, db):
 
 
 def _process_into_reddit_post(config,db,Manga,Chapters):
-    chapter_number ="Extra Chapter" if Chapters[0].chapter_number == 0 else f"{Chapters[0].chapter_number:g}" #Revert back to Extra Chapter due to data class constraint
+    chapter_number ="ex" if Chapters[0].chapter_number == 0 else f"{Chapters[0].chapter_number:g}" #Revert back to Extra Chapter due to data class constraint
 
     reddit_post_title=reddit_post_title_format.format(manga_name=Manga.manga_name,chapter_number=chapter_number)
     reddit_post_link=reddit_post_link_format.format(chapter_id=Chapters[0].chapter_id)
 
     if len(Chapters)>1:
-        reddit_post_title+=f" & {'Extra Chapter' if Chapters[1].chapter_number == 0 else f'{Chapters[1].chapter_number:g}' }"
+        reddit_post_title+=f" & {'ex' if Chapters[1].chapter_number == 0 else f'{Chapters[1].chapter_number:g}' }"
 
     return reddit_post_title,reddit_post_link
 
