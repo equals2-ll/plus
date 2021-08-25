@@ -128,6 +128,12 @@ class PlusDatabase:
         return mangas
     
     @db_error_default(list())
+    def get_manga_ids(self) -> List:
+        self.q.execute("SELECT manga_id FROM Manga")
+        manga_ids=[manga_id[0] for manga_id in self.q.fetchall()]
+        return manga_ids
+    
+    @db_error_default(list())
     def get_manga_re_edition(self,ids_only=False) -> List:
         if ids_only:
             self.q.execute("SELECT manga_id FROM Manga_Re_edition")
