@@ -37,10 +37,9 @@ def main(config, db, **kwargs):
             time.sleep(1)
             
 def test(config,db):
-    chapter_ids=db.get_chapter_ids()
-    print(chapter_ids)
-    # chapters = db.get_chapters()
-    # chapter_ids = [chapter.chapter_id for chapter in chapters]
+    print(db.get_manga_re_edition(ids_only=True))
+    # chapter_ids=db.get_chapter_ids()
+    # print(chapter_ids)
     # m = mangaplus.MangaplusService()
 
     # resp=m.request_from_api(manga_id=100171)
