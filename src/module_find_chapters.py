@@ -23,9 +23,6 @@ def main(config, db, **kwargs):
 
     if kwargs['debug']:
         info("Debug mode not available")
-        # debug_chapter = input("Update chapters to database? (Y/N): ").lower()
-        # if debug_chapter == 'y':
-        #     pass
     else:
         schedule.every().hour.at(":00").do(_find_mangaplus_chapters,config,db)
         schedule.every().day.at("23:30").do(_update_mangaplus_hiatus_manga,config,db)
@@ -40,6 +37,7 @@ def main(config, db, **kwargs):
 def _find_mangaplus_chapters(config, db):
     reddit.init_reddit(config)
     time.sleep(1)
+
     mangas = db.get_mangas(current_time=datetime.now())
     if mangas or datetime.now().hour in [23,0]:
         _find_new_manga(config,db)
@@ -136,7 +134,7 @@ def _find_new_manga(config,db):
     if resp:
         updated_manga_ids=m.get_update_new_manga(manga_re_edtion_ids)
     else:
-        error("Get new updated manga error")
+        error("Can't get new updated manga")
         updated_manga_ids=[]
 
 
