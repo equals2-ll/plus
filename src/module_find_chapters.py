@@ -30,39 +30,19 @@ def main(config, db, **kwargs):
         schedule.every().hour.at(":00").do(_find_mangaplus_chapters,config,db)
         schedule.every().day.at("23:30").do(_update_mangaplus_hiatus_manga,config,db)
         schedule.every().friday.at("22:00").do(_update_mangaplus_manga,config,db)
-        # _find_mangaplus_chapters(config,db)
-        test(config,db)
+        _find_mangaplus_chapters(config,db)
         while True:
             schedule.run_pending()
             time.sleep(1)
             
-def test(config,db):
-    manga_re_edtion_ids=db.get_manga_re_edition(ids_only=True)
-    manga_re_edtion_ids.extend(db.get_manga_ids())
-    m = mangaplus.MangaplusService()
-
-    resp=m.request_from_api(updated=True)
-    if resp:
-        updated_manga_ids=m.get_update_new_manga(manga_re_edtion_ids)
-        print(updated_manga_ids)
-    # chapter_ids=db.get_chapter_ids()
-    # print(chapter_ids)
-
-    # resp=m.request_from_api(manga_id=100171)
-    # if resp:
-    #     Manga = m.get_manga_detail()
-    #     Chapters = m.get_chapter_detail()
-
-    #     if Chapters[0].chapter_id not in chapter_ids or ignore_chapter_id:
-    #         reddit_post_title,reddit_post_link=_process_into_reddit_post(config,db,Manga,Chapters)
-    #         info(f"Reddit Post Title: {reddit_post_title}")
-    #         info(f"Reddit Post Link: {reddit_post_link}")
 
 
 def _find_mangaplus_chapters(config, db):
     reddit.init_reddit(config)
     time.sleep(1)
     mangas = db.get_mangas(current_time=datetime.now())
+    if mangas or datetime.now().hour in [23,0]:
+        _find_new_manga(config,db)
 
     chapter_ids = db.get_chapter_ids()
 
@@ -96,13 +76,18 @@ def _find_mangaplus_chapters(config, db):
 
 
 def _process_into_reddit_post(config,db,Manga,Chapters):
-    chapter_number ="ex" if Chapters[0].chapter_number == 0 else f"{Chapters[0].chapter_number:g}" #Revert back to Extra Chapter due to data class constraint
+    if Chapters[0].chapter_number == 0:
+        chapter_number = "Extra Chapter"
+    elif Chapters[0].chapter_number == 0.1:
+        chapter_number = "One-Shot"
+    else:
+        chapter_number = f"Chapter {Chapters[0].chapter_number:g}"
 
     reddit_post_title=reddit_post_title_format.format(manga_name=Manga.manga_name,chapter_number=chapter_number)
     reddit_post_link=reddit_post_link_format.format(chapter_id=Chapters[0].chapter_id)
 
     if len(Chapters)>1:
-        reddit_post_title+=f" & {'ex' if Chapters[1].chapter_number == 0 else f'{Chapters[1].chapter_number:g}' }"
+        reddit_post_title+=f" & {'Extra Chapter' if Chapters[1].chapter_number == 0 else f'{Chapters[1].chapter_number:g}' }"
 
     return reddit_post_title,reddit_post_link
 
@@ -130,14 +115,53 @@ def _update_mangaplus_manga(config,db):
 
 def _update_next_update_time(config,db,mangas):
     m = mangaplus.MangaplusService()
+
     for manga in mangas:
         resp=m.request_from_api(manga_id=manga.manga_id)
         if resp:
             Manga = m.get_manga_detail()
             if Manga.next_update_time != manga.next_update_time:
                 info(f"Updating {Manga.manga_name}  Next Update Time:{datetime.fromtimestamp(Manga.next_update_time)}")
-                db.update_manga(Manga.manga_id,next_update_time=Manga.next_update_time)
+                db.update_manga(manga_id=Manga.manga_id,next_update_time=Manga.next_update_time)
         time.sleep(3)
 
+def _find_new_manga(config,db):
+    manga_re_edtion_ids=db.get_manga_re_edition(ids_only=True)
+    manga_re_edtion_ids.extend(db.get_manga_ids())
+
+    m = mangaplus.MangaplusService()
+    y = youpoll.YouPoll()
+
+    resp=m.request_from_api(updated=True)
+    if resp:
+        updated_manga_ids=m.get_update_new_manga(manga_re_edtion_ids)
+    else:
+        error("Get new updated manga error")
+        updated_manga_ids=[]
+
+
+    for manga_id in updated_manga_ids:
+        resp=m.request_from_api(manga_id=manga_id)
+        if resp:
+            Manga = m.get_manga_detail()
+            Chapters = m.get_chapter_detail()
+
+            reddit_post_title,reddit_post_link=_process_into_reddit_post(config,db,Manga,Chapters)
+            info(f"Reddit Post Title: {reddit_post_title}")
+            info(f"Reddit Post Link: {reddit_post_link}")
+            submission=reddit.submit_link_post(reddit_post_title,reddit_post_link,config.subreddit,False)
+
+
+            reddit_comment_body,youpoll_id=_process_into_reddit_comment(config,db,y,reddit_post_title,Manga)
+            comment=reddit.comment_post(submission,reddit_comment_body)
+
+            for Chapter in Chapters:
+                Chapter.youpoll_id=youpoll_id
+                Chapter.reddit_post_id=submission.id
+                Chapter.reddit_comment_id=comment.id
+                db.add_chapter(Chapter.chapter_id,Chapter.chapter_name,Chapter.chapter_number,Chapter.youpoll_id,Chapter.reddit_post_id,Chapter.reddit_comment_id,manga_id)
+
+            db.update_manga(manga_id=manga_id,next_update_time=Manga.next_update_time,is_completed=Manga.is_completed)
+    
 
 

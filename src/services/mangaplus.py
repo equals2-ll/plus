@@ -58,6 +58,8 @@ class MangaplusChapter(MangaplusManga):
     def _process_proto_class_to_model_class(self, chapter):
         if chapter.chapter_number == "ex":
             chapter_number = 0  # Remember to convert back to Extra Chapter while creating reddit title
+        elif chapter.chapter_number == "One-Shot":
+            chapter_number = 0.1
         else:
             chapter_number = float(chapter.chapter_number.lstrip('#'))
 
@@ -72,6 +74,7 @@ class MangaplusUpdated:
         self._updated_manga_ids=list()
     
     def get_updated_manga(self,manga_re_edtion_ids) -> List:
+        """return new found manga ids"""
         for manga in self._updated.updated_manga_detail:
             if manga.updated_manga.language == 0 and int(manga.upload_timestamp)> datetime.timestamp(datetime.now()-timedelta(minutes=5)) and manga.updated_manga.manga_id not in manga_re_edtion_ids:
                 manga_id=manga.updated_manga.manga_id
