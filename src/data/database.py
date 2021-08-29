@@ -79,6 +79,10 @@ class PlusDatabase:
             manga               INTEGER NOT NULL,
             FOREIGN KEY(manga)  REFERENCES Manga(manga_id) ON DELETE CASCADE
         )""")
+        self.q.execute("""CREATE TABLE IF NOT EXISTS Manga_Re_edition (
+            manga_id            INTEGER NOT NULL PRIMARY KEY,
+            manga_name          TEXT NOT NULL
+        )""")
 
     @db_error_default(None)
     def get_manga(self, manga_id=None) -> Optional[Manga]:
@@ -122,6 +126,25 @@ class PlusDatabase:
                 mangas.append(Manga(*manga))
 
         return mangas
+    
+    @db_error_default(list())
+    def get_manga_ids(self) -> List:
+        self.q.execute("SELECT manga_id FROM Manga")
+        manga_ids=[manga_id[0] for manga_id in self.q.fetchall()]
+        return manga_ids
+    
+    @db_error_default(list())
+    def get_manga_re_edition(self,ids_only=False) -> List:
+        if ids_only:
+            self.q.execute("SELECT manga_id FROM Manga_Re_edition")
+            manga_ids=[manga_id[0] for manga_id in self.q.fetchall()]
+            return manga_ids
+        else:
+            mangas=list()
+            self.q.execute("SELECT * FROM Manga_Re_edition")
+            for manga in self.q.fetchall():
+                mangas.append(manga)
+            return mangas
 
     @db_error_default(None)
     def get_chapter(self, chapter_id=None) -> Optional[Chapter]:
@@ -139,6 +162,7 @@ class PlusDatabase:
     @db_error_default(list())
     def get_chapters(self, manga_id=None) -> List[Chapter]:
         chapters = list()
+        
         if manga_id is not None:
             self.q.execute("SELECT * FROM Chapter WHERE manga = ?", (manga_id,))
         else:
@@ -147,12 +171,27 @@ class PlusDatabase:
         for chapter in self.q.fetchall():
             chapters.append(Chapter(*chapter))
         return chapters
+    
+    @db_error_default(list())
+    def get_chapter_ids(self) -> List:
+        self.q.execute("SELECT chapter_id FROM Chapter")
+        chapter_ids=[chapter_id[0] for chapter_id in self.q.fetchall()]
+        
+        return chapter_ids
 
     @db_error
     def add_manga(self, manga_id, manga_name, subreddit, next_update_time, is_completed, is_nsfw, commit=True):
-        debug(f"Adding manga: {manga_name}")
+        info(f"Adding manga: {manga_name}")
         self.q.execute("INSERT OR IGNORE INTO Manga (manga_id,manga_name,subreddit,next_update_time,is_completed,is_nsfw) VALUES (?,?,?,?,?,?)",
                        (manga_id, manga_name, subreddit, next_update_time, is_completed, is_nsfw))
+        if commit:
+            self.commit()
+
+    @db_error
+    def add_manga_re_edition(self,manga_id,manga_name,commit=True):
+        info(f"Adding re-edition manga: {manga_name}")
+        self.q.execute("INSERT OR IGNORE INTO Manga_Re_edition (manga_id,manga_name) VALUES (?,?)",(manga_id,manga_name))
+
         if commit:
             self.commit()
 
@@ -190,6 +229,13 @@ class PlusDatabase:
     def delete_manga(self,manga_id,commit=True):
         info(f"Delete manga {manga_id}")
         self.q.execute("DELETE FROM Manga WHERE manga_id = ?",(manga_id,))
+        if commit:
+            self.commit()
+
+    @db_error
+    def delete_manga_re_edition(self,manga_id,commit=True):
+        info(f"Delete manga {manga_id}")
+        self.q.execute("DELETE FROM Manga_Re_edition WHERE manga_id = ?",(manga_id,))
         if commit:
             self.commit()
     

@@ -25,11 +25,13 @@ def main(config, db, *args, **kwargs):
         2. Update existing manga
         3. View manga in database
         4. View chapters in database
+        5. Add new manga re-edition (ignore)
+        6. View manga re-edition in database
         {'-'*20}
         """)
         while True:
-            choice = int(input("Input (1-4): "))
-            if choice in range(1, 5):
+            choice = int(input("Input (1-6): "))
+            if choice in range(1, 7):
                 break
             else:
                 print("Invalid input")
@@ -41,7 +43,11 @@ def main(config, db, *args, **kwargs):
             _view_manga_in_database(config, db)
         elif choice == 4:
             _view_chapters_in_database(config,db)
-
+        elif choice == 5:
+            _add_new_manga_re_edition(config,db)
+        elif choice == 6:
+            _view_manga_re_edition_in_database(config,db)
+        
 
 def _add_new_manga(config, db):
     while True:
@@ -82,7 +88,7 @@ def _manual_input(manga_id):
 
 def _load_from_mangaplus(manga_id):
     m = mangaplus.MangaplusService()
-    resp = m.request_from_api(manga_id)
+    resp = m.request_from_api(manga_id=manga_id)
     if resp:
         return m.get_manga_detail()
 
@@ -160,3 +166,28 @@ def _view_chapters_in_database(config,db):
     if delete_chapter == 'y':
         chapter_id=int(input("Chapter ID: "))
         db.delete_chapter(chapter_id)
+
+def _add_new_manga_re_edition(config,db):
+    while True:
+
+        manga_id = int(input("Manga Re-edition ID: "))
+        manga_name= input("Manga Re-edition name: ")
+
+        print(f"{manga_id}  {manga_name}")
+
+        confirm = input("Add to database? (Y/N): ").lower()
+        if confirm == 'y':
+            db.add_manga_re_edition(manga_id,manga_name)
+            
+
+        continued = input("Continue? (Y/N): ").lower()
+        if continued == 'n':
+            break
+
+def _view_manga_re_edition_in_database(config,db):
+    mangas=db.get_manga_re_edition()
+    print(tabulate(mangas,headers=["Manga ID","Manga Name"]))
+    delete_manga=input("\nDelete manga re-edtion from database? (Y/N): ").lower()
+    if delete_manga == 'y':
+        manga_id=int(input("Manga Re-edition ID: "))
+        db.delete_manga_re_edtion(manga_id)

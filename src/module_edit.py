@@ -42,7 +42,7 @@ def _edit_with_file(db, edit_file):
         if manga_id not in manga_ids:
             info(f"Adding new manga '{parsed[manga_id]['manga_name']} to database")
             m = mangaplus.MangaplusService()
-            resp = m.request_from_api(manga_id)
+            resp = m.request_from_api(manga_id=manga_id)
             if resp:
                 manga= m.get_manga_detail()
                 manga.subreddit=parsed[manga_id]['subreddit']
