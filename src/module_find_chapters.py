@@ -124,6 +124,7 @@ def _update_next_update_time(config,db,mangas):
         time.sleep(3)
 
 def _find_new_manga(config,db):
+    info("Finding new manga")
     manga_re_edtion_ids=db.get_manga_re_edition(ids_only=True)
     manga_re_edtion_ids.extend(db.get_manga_ids())
 
