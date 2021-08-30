@@ -10,7 +10,6 @@ from typing import Optional, List
 from .models import Manga, Chapter
 
 
-
 def initialize_database(database):
     try:
         db = sqlite3.connect(database)
@@ -97,13 +96,13 @@ class PlusDatabase:
         return Manga(*manga)
 
     @db_error_default(list())
-    def get_mangas(self, completed=False, current_time=None,all=False) -> List[Manga]:
+    def get_mangas(self, completed=False, current_time=None, all=False) -> List[Manga]:
         mangas = list()
 
         if (current_time is not None):
             self.q.execute("""SELECT manga_id,manga_name,subreddit,next_update_time,is_completed,is_nsfw 
                 FROM Manga WHERE next_update_time BETWEEN ? AND ? ORDER BY next_update_time ASC
-            """, (datetime.timestamp(current_time-timedelta(minutes=5)),datetime.timestamp(current_time+timedelta(minutes=5))))
+            """, (datetime.timestamp(current_time-timedelta(minutes=5)), datetime.timestamp(current_time+timedelta(minutes=5))))
             for manga in self.q.fetchall():
                 mangas.append(Manga(*manga))
 
@@ -114,7 +113,8 @@ class PlusDatabase:
             for manga in self.q.fetchall():
                 mangas.append(Manga(*manga))
         elif all:
-            self.q.execute("SELECT manga_id,manga_name,subreddit,next_update_time,is_completed,is_nsfw FROM Manga")
+            self.q.execute(
+                "SELECT manga_id,manga_name,subreddit,next_update_time,is_completed,is_nsfw FROM Manga")
             for manga in self.q.fetchall():
                 mangas.append(Manga(*manga))
         else:
@@ -126,21 +126,21 @@ class PlusDatabase:
                 mangas.append(Manga(*manga))
 
         return mangas
-    
+
     @db_error_default(list())
     def get_manga_ids(self) -> List:
         self.q.execute("SELECT manga_id FROM Manga")
-        manga_ids=[manga_id[0] for manga_id in self.q.fetchall()]
+        manga_ids = [manga_id[0] for manga_id in self.q.fetchall()]
         return manga_ids
-    
+
     @db_error_default(list())
-    def get_manga_re_edition(self,ids_only=False) -> List:
+    def get_manga_re_edition(self, ids_only=False) -> List:
         if ids_only:
             self.q.execute("SELECT manga_id FROM Manga_Re_edition")
-            manga_ids=[manga_id[0] for manga_id in self.q.fetchall()]
+            manga_ids = [manga_id[0] for manga_id in self.q.fetchall()]
             return manga_ids
         else:
-            mangas=list()
+            mangas = list()
             self.q.execute("SELECT * FROM Manga_Re_edition")
             for manga in self.q.fetchall():
                 mangas.append(manga)
@@ -162,21 +162,22 @@ class PlusDatabase:
     @db_error_default(list())
     def get_chapters(self, manga_id=None) -> List[Chapter]:
         chapters = list()
-        
+
         if manga_id is not None:
-            self.q.execute("SELECT * FROM Chapter WHERE manga = ?", (manga_id,))
+            self.q.execute(
+                "SELECT * FROM Chapter WHERE manga = ?", (manga_id,))
         else:
             self.q.execute("SELECT * FROM Chapter")
 
         for chapter in self.q.fetchall():
             chapters.append(Chapter(*chapter))
         return chapters
-    
+
     @db_error_default(list())
     def get_chapter_ids(self) -> List:
         self.q.execute("SELECT chapter_id FROM Chapter")
-        chapter_ids=[chapter_id[0] for chapter_id in self.q.fetchall()]
-        
+        chapter_ids = [chapter_id[0] for chapter_id in self.q.fetchall()]
+
         return chapter_ids
 
     @db_error
@@ -188,9 +189,10 @@ class PlusDatabase:
             self.commit()
 
     @db_error
-    def add_manga_re_edition(self,manga_id,manga_name,commit=True):
+    def add_manga_re_edition(self, manga_id, manga_name, commit=True):
         info(f"Adding re-edition manga: {manga_name}")
-        self.q.execute("INSERT OR IGNORE INTO Manga_Re_edition (manga_id,manga_name) VALUES (?,?)",(manga_id,manga_name))
+        self.q.execute(
+            "INSERT OR IGNORE INTO Manga_Re_edition (manga_id,manga_name) VALUES (?,?)", (manga_id, manga_name))
 
         if commit:
             self.commit()
@@ -224,28 +226,29 @@ class PlusDatabase:
 
         if commit:
             self.commit()
-    
+
     @db_error
-    def delete_manga(self,manga_id,commit=True):
+    def delete_manga(self, manga_id, commit=True):
         info(f"Delete manga {manga_id}")
-        self.q.execute("DELETE FROM Manga WHERE manga_id = ?",(manga_id,))
+        self.q.execute("DELETE FROM Manga WHERE manga_id = ?", (manga_id,))
         if commit:
             self.commit()
 
     @db_error
-    def delete_manga_re_edition(self,manga_id,commit=True):
+    def delete_manga_re_edition(self, manga_id, commit=True):
         info(f"Delete manga {manga_id}")
-        self.q.execute("DELETE FROM Manga_Re_edition WHERE manga_id = ?",(manga_id,))
+        self.q.execute(
+            "DELETE FROM Manga_Re_edition WHERE manga_id = ?", (manga_id,))
         if commit:
             self.commit()
-    
+
     @db_error
-    def delete_chapter(self,chapter_id,commit=True):
+    def delete_chapter(self, chapter_id, commit=True):
         info(f"Delete chapter {chapter_id}")
-        self.q.execute("DELETE FROM Chapter WHERE chapter_id = ?",(chapter_id,))
+        self.q.execute(
+            "DELETE FROM Chapter WHERE chapter_id = ?", (chapter_id,))
         if commit:
             self.commit()
-
 
 
 # collation
@@ -257,7 +260,3 @@ def _collate_alphanum(str1, str2):
         return -1
     else:
         return 1
-
-
-
-

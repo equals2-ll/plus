@@ -8,15 +8,15 @@ from tabulate import tabulate
 
 
 def main(config, db, *args, **kwargs):
-    if len(args)==1:
-        if args[0].lower()=='add':
-            _add_new_manga(config,db)
-        elif args[0].lower()=='update':
-            _update_existing_manga(config,db)
-        elif args[0].lower()=='view_manga':
-            _view_manga_in_database(config,db)
-        elif args[0].lower()=='view_chapter':
-            _view_chapters_in_database(config,db)
+    if len(args) == 1:
+        if args[0].lower() == 'add':
+            _add_new_manga(config, db)
+        elif args[0].lower() == 'update':
+            _update_existing_manga(config, db)
+        elif args[0].lower() == 'view_manga':
+            _view_manga_in_database(config, db)
+        elif args[0].lower() == 'view_chapter':
+            _view_chapters_in_database(config, db)
     else:
         print(f"""
         Mangaplus Bot Database
@@ -42,12 +42,12 @@ def main(config, db, *args, **kwargs):
         elif choice == 3:
             _view_manga_in_database(config, db)
         elif choice == 4:
-            _view_chapters_in_database(config,db)
+            _view_chapters_in_database(config, db)
         elif choice == 5:
-            _add_new_manga_re_edition(config,db)
+            _add_new_manga_re_edition(config, db)
         elif choice == 6:
-            _view_manga_re_edition_in_database(config,db)
-        
+            _view_manga_re_edition_in_database(config, db)
+
 
 def _add_new_manga(config, db):
     while True:
@@ -69,7 +69,8 @@ def _add_new_manga(config, db):
 
         confirm = input("Add to database? (Y/N): ").lower()
         if confirm == 'y':
-            db.add_manga(manga.manga_id,manga.manga_name,manga.subreddit,manga.next_update_time,manga.is_completed,manga.is_nsfw)
+            db.add_manga(manga.manga_id, manga.manga_name, manga.subreddit,
+                         manga.next_update_time, manga.is_completed, manga.is_nsfw)
             # db.add_manga(manga_id, manga_name, subreddit,
             #              next_update_time, is_completed, is_nsfw)
 
@@ -83,7 +84,7 @@ def _manual_input(manga_id):
     next_update_time = int(input("Next Update Time (Epoch Timestamp): "))
     is_completed = bool(int(input("Is completed: ")))
 
-    return Manga(manga_id=manga_id,manga_name=manga_name,next_update_time=next_update_time,is_completed=is_completed)
+    return Manga(manga_id=manga_id, manga_name=manga_name, next_update_time=next_update_time, is_completed=is_completed)
 
 
 def _load_from_mangaplus(manga_id):
@@ -132,7 +133,7 @@ def _update_existing_manga(config, db):
 
 
 def _view_manga_in_database(config, db):
-    hiatus=input("Hiatus (Y/N): ").lower()
+    hiatus = input("Hiatus (Y/N): ").lower()
     if hiatus == 'y':
         mangas = db.get_mangas(completed=True)
     else:
@@ -144,50 +145,55 @@ def _view_manga_in_database(config, db):
         table.append([manga.manga_id, manga.manga_name, manga.subreddit,
                      datetime.fromtimestamp(manga.next_update_time).strftime("%y-%m-%d %H:%M"), bool(manga.is_completed), bool(manga.is_nsfw)])
     print(tabulate(table, headers=headers))
-    
+
     # delete manga from database not available, forgot to set up on delete cascade on Chapter table
-    delete_manga=input("\nDelete manga from database? (Y/N): ").lower()
+    delete_manga = input("\nDelete manga from database? (Y/N): ").lower()
     if delete_manga == 'y':
-        manga_id=int(input("Manga ID: "))
+        manga_id = int(input("Manga ID: "))
         db.delete_manga(manga_id)
 
-def _view_chapters_in_database(config,db):
-    manga_id= int(input("Manga ID (0 for all chapters): "))
-    if manga_id==0:
-        chapters=db.get_chapters()
+
+def _view_chapters_in_database(config, db):
+    manga_id = int(input("Manga ID (0 for all chapters): "))
+    if manga_id == 0:
+        chapters = db.get_chapters()
     else:
-        chapters=db.get_chapters(manga_id=manga_id)
-    headers=["Chapter ID","Chapter Number","Youpoll ID","Reddit Post ID","Reddit Comment ID","Manga ID"]
-    table=[]
+        chapters = db.get_chapters(manga_id=manga_id)
+    headers = ["Chapter ID", "Chapter Number", "Youpoll ID",
+               "Reddit Post ID", "Reddit Comment ID", "Manga ID"]
+    table = []
     for chapter in chapters:
-        table.append([chapter.chapter_id,chapter.chapter_number,chapter.youpoll_id,chapter.reddit_post_id,chapter.reddit_comment_id,chapter.manga_id])
-    print(tabulate(table,headers=headers))
-    delete_chapter=input("\nDelete chapter from database? (Y/N): ").lower()
+        table.append([chapter.chapter_id, chapter.chapter_number, chapter.youpoll_id,
+                     chapter.reddit_post_id, chapter.reddit_comment_id, chapter.manga_id])
+    print(tabulate(table, headers=headers))
+    delete_chapter = input("\nDelete chapter from database? (Y/N): ").lower()
     if delete_chapter == 'y':
-        chapter_id=int(input("Chapter ID: "))
+        chapter_id = int(input("Chapter ID: "))
         db.delete_chapter(chapter_id)
 
-def _add_new_manga_re_edition(config,db):
+
+def _add_new_manga_re_edition(config, db):
     while True:
 
         manga_id = int(input("Manga Re-edition ID: "))
-        manga_name= input("Manga Re-edition name: ")
+        manga_name = input("Manga Re-edition name: ")
 
         print(f"{manga_id}  {manga_name}")
 
         confirm = input("Add to database? (Y/N): ").lower()
         if confirm == 'y':
-            db.add_manga_re_edition(manga_id,manga_name)
-            
+            db.add_manga_re_edition(manga_id, manga_name)
 
         continued = input("Continue? (Y/N): ").lower()
         if continued == 'n':
             break
 
-def _view_manga_re_edition_in_database(config,db):
-    mangas=db.get_manga_re_edition()
-    print(tabulate(mangas,headers=["Manga ID","Manga Name"]))
-    delete_manga=input("\nDelete manga re-edtion from database? (Y/N): ").lower()
+
+def _view_manga_re_edition_in_database(config, db):
+    mangas = db.get_manga_re_edition()
+    print(tabulate(mangas, headers=["Manga ID", "Manga Name"]))
+    delete_manga = input(
+        "\nDelete manga re-edtion from database? (Y/N): ").lower()
     if delete_manga == 'y':
-        manga_id=int(input("Manga Re-edition ID: "))
+        manga_id = int(input("Manga Re-edition ID: "))
         db.delete_manga_re_edtion(manga_id)
