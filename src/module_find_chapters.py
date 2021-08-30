@@ -154,13 +154,14 @@ def _find_new_manga(config,db):
             reddit_comment_body,youpoll_id=_process_into_reddit_comment(config,db,y,reddit_post_title,Manga)
             comment=reddit.comment_post(submission,reddit_comment_body)
 
+            db.add_manga(Manga.manga_id,Manga.manga_name,Manga.subreddit,Manga.next_update_time,Manga.is_completed,Manga.is_nsfw)
+
             for Chapter in Chapters:
                 Chapter.youpoll_id=youpoll_id
                 Chapter.reddit_post_id=submission.id
                 Chapter.reddit_comment_id=comment.id
                 db.add_chapter(Chapter.chapter_id,Chapter.chapter_name,Chapter.chapter_number,Chapter.youpoll_id,Chapter.reddit_post_id,Chapter.reddit_comment_id,manga_id)
 
-            db.update_manga(manga_id=manga_id,next_update_time=Manga.next_update_time,is_completed=Manga.is_completed)
     
 
 
