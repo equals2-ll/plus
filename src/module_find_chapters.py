@@ -43,10 +43,10 @@ def _find_mangaplus_chapters(config, db):
 
     chapter_ids = db.get_chapter_ids()
 
-    m = mangaplus.MangaplusService()
     y = youpoll.YouPoll()
 
     for manga in mangas:
+        m = mangaplus.MangaplusService()
         resp = m.request_from_api(manga_id=manga.manga_id)
         if resp:
             Manga = m.get_manga_detail()
