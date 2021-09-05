@@ -38,8 +38,6 @@ def _find_mangaplus_chapters(config, db):
     time.sleep(1)
 
     mangas = db.get_mangas(current_time=datetime.now())
-    if mangas or datetime.now().hour in [23, 0]:
-        _find_new_manga(config, db)
 
     chapter_ids = db.get_chapter_ids()
 
@@ -73,7 +71,11 @@ def _find_mangaplus_chapters(config, db):
 
             db.update_manga(manga_id=manga.manga_id,
                             next_update_time=Manga.next_update_time, is_completed=Manga.is_completed)
+    
+    time.sleep(2)
 
+    if mangas or datetime.now().hour in [23, 0]:
+        _find_new_manga(config, db)
 
 def _process_into_reddit_post(config, db, Manga, Chapters):
     if Chapters[0].chapter_number == 0:
