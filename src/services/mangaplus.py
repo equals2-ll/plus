@@ -20,9 +20,11 @@ class MangaplusManga:
                      next_update_time=self._detail.next_timestamp, is_completed=bool(self._detail.non_appearance_info))
 
 
-class MangaplusChapter(MangaplusManga):
+class MangaplusChapter:
     def __init__(self, response_proto):
-        super().__init__(response_proto)
+        response = response_pb.Response()
+        response.ParseFromString(response_proto)
+        self._detail = response.success.manga_detail
         self._chapters = list()
 
     def get_latest_chapter_detail(self) -> List[Chapter]:
