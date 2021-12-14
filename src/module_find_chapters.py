@@ -25,7 +25,8 @@ def main(config, db, **kwargs):
         info("Debug mode not available")
     else:
         schedule.every().hour.at(":00").do(_find_mangaplus_chapters, config, db)
-        schedule.every().day.at("23:30").do(_update_mangaplus_hiatus_manga, config, db)
+        # schedule.every().day.at("23:30").do(_update_mangaplus_hiatus_manga, config, db)
+        schedule.every().day.at("10:30").do(_update_mangaplus_hiatus_manga, config, db)
         schedule.every().friday.at("22:00").do(_update_mangaplus_manga, config, db)
         _find_mangaplus_chapters(config, db)
         while True:
@@ -53,8 +54,8 @@ def _find_mangaplus_chapters(config, db):
             if Chapters[0].chapter_id not in chapter_ids or ignore_chapter_id:
                 reddit_post_title, reddit_post_link = _process_into_reddit_post(
                     config, db, Manga, Chapters)
-                info(f"Reddit Post Title: {reddit_post_title}")
-                info(f"Reddit Post Link: {reddit_post_link}")
+                # info(f"Reddit Post Title: {reddit_post_title}")
+                # info(f"Reddit Post Link: {reddit_post_link}")
                 submission = reddit.submit_link_post(
                     reddit_post_title, reddit_post_link, config.subreddit, manga.is_nsfw)
 
@@ -98,14 +99,15 @@ def _process_into_reddit_post(config, db, Manga, Chapters):
 
 def _process_into_reddit_comment(config, db, youpoll, reddit_post_title, manga):
     poll_url, poll_id = youpoll.create_poll(reddit_post_title[7:])
+    reddit_search_url = reddit_search_url_format.format(manga_name=manga.manga_name.replace('#', ''))
     if poll_id is not None:
-        reddit_search_url = reddit_search_url_format.format(
-            manga_name=manga.manga_name.replace('#', ''))
-
         reddit_comment_body = reddit_comment_body_format.format(
             poll_url=poll_url, manga_title=reddit_post_title[7:], reddit_search_url=reddit_search_url, subreddit_name=manga.subreddit)
-
-    return reddit_comment_body, poll_id
+        return reddit_comment_body, poll_id
+    else:
+        reddit_comment_body = reddit_comment_body_format.format(
+            poll_url='-', manga_title=reddit_post_title[7:], reddit_search_url=reddit_search_url, subreddit_name=manga.subreddit)
+        return reddit_comment_body, '-'
 
 
 def _update_mangaplus_hiatus_manga(config, db):
@@ -158,8 +160,8 @@ def _find_new_manga(config, db):
 
             reddit_post_title, reddit_post_link = _process_into_reddit_post(
                 config, db, Manga, Chapters)
-            info(f"Reddit Post Title: {reddit_post_title}")
-            info(f"Reddit Post Link: {reddit_post_link}")
+            # info(f"Reddit Post Title: {reddit_post_title}")
+            # info(f"Reddit Post Link: {reddit_post_link}")
             submission = reddit.submit_link_post(
                 reddit_post_title, reddit_post_link, config.subreddit, False)
 
