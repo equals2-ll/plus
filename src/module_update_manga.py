@@ -126,10 +126,10 @@ def _update_existing_manga(config, db):
         if confirm == 'y':
             db.update_manga(manga_id=manga_id, is_nsfw=is_nsfw)
     elif choice == 5:
-        is_completed = input("Is completed: ")
+        subreddit = input("Subreddit: ")
         confirm = input("Confirm (Y/N): ").lower()
         if confirm == 'y':
-            db.update_manga(manga_id=manga_id, is_completed=is_completed)
+            db.update_manga(manga_id=manga_id, subreddit=subreddit)
 
 
 def _view_manga_in_database(config, db):
