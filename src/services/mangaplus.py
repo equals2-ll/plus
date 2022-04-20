@@ -59,10 +59,10 @@ class MangaplusChapter:
     def _process_proto_class_to_model_class(self, chapter):
         if chapter.chapter_number == "ex":
             chapter_number = 0  # Remember to convert back to Extra Chapter while creating reddit title
-        elif chapter.chapter_number == "One-Shot":
+        elif chapter.chapter_number.lower() == "one-shot":
             chapter_number = 0.1
         else:
-            chapter_number = float(chapter.chapter_number.lstrip('#'))
+            chapter_number = float(chapter.chapter_number.lstrip('#').replace("-","."))
 
         self._chapters.append(Chapter(chapter_id=chapter.chapter_id,
                               chapter_name=chapter.chapter_name, chapter_number=chapter_number, manga_id=self._detail.manga.manga_id))
