@@ -38,15 +38,15 @@ class MangaplusChapter:
         try:
             newest_chapter_release_date = datetime.fromtimestamp(
                 self._chapter_list[-1].start_timestamp)
-            second_newest_chapter_release_date = datetime.fromtimestamp(
-                self._chapter_list[-2].start_timestamp)
+            for chapter in self._chapter_list:
+                second_newest_chapter_release_date = datetime.fromtimestamp(
+                    chapter.start_timestamp)
 
-            time_difference = (
-                newest_chapter_release_date-second_newest_chapter_release_date).total_seconds()
+                time_difference = (
+                    newest_chapter_release_date-second_newest_chapter_release_date).total_seconds()
 
-            if time_difference < 600:
-                chapter = self._chapter_list[-2]
-                self._process_proto_class_to_model_class(chapter)
+                if time_difference < 600:                
+                    self._process_proto_class_to_model_class(chapter)
 
         except IndexError:
             info("Only one chapter exist, can't check double chapter")
