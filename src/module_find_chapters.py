@@ -63,6 +63,9 @@ def _find_mangaplus_chapters(config, db):
                     config, db, y, reddit_post_title, manga)
                 comment = reddit.comment_post(submission, reddit_comment_body)
 
+                repost_link=f"https://www.reddit.com/r/{config.subreddit}/comments/{submission.id}/"
+                reddit.submit_repost(reddit_post_title,repost_link,config.subreddit,manga.is_nsfw)
+
                 for Chapter in Chapters:
                     Chapter.youpoll_id = youpoll_id
                     Chapter.reddit_post_id = submission.id

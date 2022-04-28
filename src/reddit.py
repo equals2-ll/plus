@@ -40,3 +40,13 @@ def comment_post(submission,comment_text):
         return comment
     except:
         exception("Failed to comment post")
+
+def submit_repost(title,url,subreddit,nsfw):
+    _ensure_connection()
+    try:
+        info(f"Reposting - {url}")
+        submission=_r.subreddit(subreddit).submit(title,url=url,nsfw=bool(nsfw))
+        return submission
+    except:
+        exception("Failed to submit post")
+        return None
