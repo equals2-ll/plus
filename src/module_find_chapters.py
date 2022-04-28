@@ -53,7 +53,7 @@ def _find_mangaplus_chapters(config, db):
 
             if Chapters[0].chapter_id not in chapter_ids or ignore_chapter_id:
                 reddit_post_title, reddit_post_link = _process_into_reddit_post(
-                    config, db, Manga, Chapters)
+                    config, db, manga, Chapters)
                 # info(f"Reddit Post Title: {reddit_post_title}")
                 # info(f"Reddit Post Link: {reddit_post_link}")
                 submission = reddit.submit_link_post(
