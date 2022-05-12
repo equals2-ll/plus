@@ -51,9 +51,6 @@ class MangaplusChapter:
         except IndexError:
             info("Only one chapter exist, can't check double chapter")
 
-        chapter = self._chapter_list[-1]
-        self._process_proto_class_to_model_class(chapter)
-
         return self._chapters
 
     def _process_proto_class_to_model_class(self, chapter):
