@@ -91,7 +91,9 @@ def _process_into_reddit_post(config, db, Manga, Chapters):
     reddit_post_link = reddit_post_link_format.format(
         chapter_id=Chapters[0].chapter_id)
 
-    if len(Chapters) > 1:
+    if len(Chapters)>2:
+        reddit_post_title += f" - {'Extra Chapter' if Chapters[-1].chapter_number == 0 else f'{Chapters[-1].chapter_number:g}' }"
+    elif len(Chapters)==2:
         reddit_post_title += f" & {'Extra Chapter' if Chapters[1].chapter_number == 0 else f'{Chapters[1].chapter_number:g}' }"
 
     return reddit_post_title, reddit_post_link
