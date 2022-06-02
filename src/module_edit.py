@@ -22,6 +22,11 @@ def main(config, db, *args):
         warning(
             "Dumping will overwrite manga file with database data, mainly used when transferring machines")
         _dump_to_yaml_file_from_db(db, args[0])
+
+    elif len(args) ==2 and args[1].lower() == 'migrate':
+        info(f"Migrating {args[0]} to database.sqlite")
+        _migrate_chapters(db,args[0])
+
     elif len(args) == 1 or (len(args) == 2 and args[1].lower() == 'load'):
         if _edit_with_file(db, args[0]):
             info("Edit successful; saving")
@@ -75,3 +80,22 @@ def _dump_to_yaml_file_from_db(db, edit_file):
 
     with open(edit_file_path, 'w') as fp:
         yaml.dump(data, fp)
+
+def _migrate_chapters(db,old_db_name):
+    from data import database
+    old_db=database.initialize_database(old_db_name)
+    manga_ids=db.get_manga_ids()
+
+    for manga_id in manga_ids:
+        chapter_ids=db.get_chapter_ids(manga_id=manga_id) 
+        old_chapter_ids=old_db.get_chapter_ids(manga_id=manga_id)
+
+        different_chapter_ids=list(set(old_chapter_ids) - set(chapter_ids))
+
+        for chapter_id in different_chapter_ids:
+            chapter=old_db.get_chapter(chapter_id=chapter_id)
+
+            info(chapter)
+            
+            db.add_chapter(chapter.chapter_id,chapter.chapter_name,chapter.chapter_number,chapter.youpoll_id,chapter.reddit_post_id,chapter.reddit_comment_id,chapter.manga_id)
+            
