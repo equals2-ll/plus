@@ -2,7 +2,7 @@
   manga_name: Black Clover
   subreddit: BlackClover
   is_nsfw: false
-  is_completed: false
+  is_completed: true
 100006:
   manga_name: 'Boruto: Naruto Next Generations'
   subreddit: Naruto
@@ -82,7 +82,7 @@
   manga_name: 'Magu-chan: God of Destruction'
   subreddit: MaguChan
   is_nsfw: false
-  is_completed: false
+  is_completed: true
 100108:
   manga_name: Me & Roboco
   subreddit: '-'
@@ -127,7 +127,7 @@
   manga_name: Don't Blush, Sekime-san!
   subreddit: '-'
   is_nsfw: false
-  is_completed: false
+  is_completed: true
 100157:
   manga_name: Blue Box
   subreddit: FreeBlueBox
@@ -152,9 +152,99 @@
   manga_name: Blue Exorcist
   subreddit: AoNoExorcist
   is_nsfw: false
-  is_completed: true
+  is_completed: false
 100160:
   manga_name: Choujin X
   subreddit: ChoujinX
   is_nsfw: false
   is_completed: true
+100109:
+  manga_name: GHOST REAPER GIRL
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: true
+100119:
+  manga_name: 'Ron Kamonohashi: Deranged Detective'
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100170:
+  manga_name: Kubo Won't Let Me Be Invisible
+  subreddit: KuboSanWontLeaveMeBe
+  is_nsfw: false
+  is_completed: false
+100171:
+  manga_name: Dandadan
+  subreddit: dandadan
+  is_nsfw: false
+  is_completed: false
+100174:
+  manga_name: Diamond in the Rough
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100175:
+  manga_name: PPPPPP
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100178:
+  manga_name: Show-ha Shoten!
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100179:
+  manga_name: Even If You Slit My Mouth
+  subreddit: EvenIfYouSlitMyMouth
+  is_nsfw: false
+  is_completed: false
+100180:
+  manga_name: Ayashimon
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: true
+100181:
+  manga_name: Protect Me, Shugomaru!
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100182:
+  manga_name: Doron Dororon
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100183:
+  manga_name: Magilumiere Co. Ltd.
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100184:
+  manga_name: 'The Kajiki Chef: Divine Cuisine'
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100185:
+  manga_name: Akane-banashi
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100186:
+  manga_name: Earthchild
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
+100190:
+  manga_name: MARRIAGETOXIN
+  subreddit: marriagetoxin
+  is_nsfw: false
+  is_completed: false
+100191:
+  manga_name: Oshi No Ko (Mangaplus)
+  subreddit: OshiNoKo
+  is_nsfw: false
+  is_completed: false
+100192:
+  manga_name: Super Smartphone
+  subreddit: '-'
+  is_nsfw: false
+  is_completed: false
