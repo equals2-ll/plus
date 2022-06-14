@@ -248,3 +248,8 @@
   subreddit: '-'
   is_nsfw: false
   is_completed: false
+100196:
+  manga_name: RURIDRAGON
+  subreddit: ruridragon
+  is_nsfw: false
+  is_completed: false
