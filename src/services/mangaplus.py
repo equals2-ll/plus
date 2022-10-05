@@ -90,15 +90,20 @@ class MangaplusService():
         self._proto_blob = b""
 
     def request_from_api(self, manga_id='', updated=False):
-        try:
-            if manga_id:
-                response = requests.get(self._base_api_url+"/api/title_detail", params={
-                                        'lang': 'eng', 'title_id': manga_id}, stream=True)
-            elif updated:
-                response = requests.get(
-                    self._base_api_url+"/api/title_list/updated", params={'lang': 'eng'}, stream=True)
-        except:
-            error("Request API Error")
+        while True:
+            try:
+                if manga_id:
+                    response = requests.get(self._base_api_url+"/api/title_detail", params={
+                                            'lang': 'eng', 'title_id': manga_id}, stream=True)
+                elif updated:
+                    response = requests.get(
+                        self._base_api_url+"/api/title_list/updated", params={'lang': 'eng'}, stream=True)
+                
+                break
+            except:
+                error("Request API Error")
+
+                time.sleep(3)
 
         if response.status_code == 200:
             for chunk in response.iter_content(chunk_size=1024):
