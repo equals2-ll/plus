@@ -59,7 +59,10 @@ class MangaplusChapter:
         elif chapter.chapter_number.lower() == "one-shot":
             chapter_number = 0.1
         else:
-            chapter_number = float(chapter.chapter_number.lstrip('#').replace("-","."))
+            try:
+                chapter_number = float(chapter.chapter_number.lstrip('#').replace("-","."))
+            except ValueError:
+                chapter_number = 1
 
         self._chapters.append(Chapter(chapter_id=chapter.chapter_id,
                               chapter_name=chapter.chapter_name, chapter_number=chapter_number, manga_id=self._detail.manga.manga_id))
