@@ -27,21 +27,21 @@ class YouPoll():
         self._poll_id_re = re.compile('youpoll.me/(\d+)', re.I)
 
     def create_poll(self, title, **kwargs):
-        data = self._poll_post_data
-        data['poll-1[question]'] = title
+ #       data = self._poll_post_data
+ #       data['poll-1[question]'] = title
 
-        try:
-            resp = requests.post(self._poll_url, data=data, **kwargs)
-        except:
-            warning("Could not create poll (exception in POST)")
-            return None,None
+ #       try:
+ #           resp = requests.post(self._poll_url, data=data, **kwargs)
+ #       except:
+ #           warning("Could not create poll (exception in POST)")
+ #           return None,None
 
-        if resp.ok:
-            match = self._poll_id_re.search(resp.url)
-            poll_id = match.group(1)
-            poll_link = f'https://youpoll.me/{poll_id}/'
-            return poll_link, poll_id
-
-        else:
-            warning("Could not create poll (resp !OK)")
-            return None,None
+ #       if resp.ok:
+ #           match = self._poll_id_re.search(resp.url)
+ #           poll_id = match.group(1)
+ #           poll_link = f'https://youpoll.me/{poll_id}/'
+ #           return poll_link, poll_id
+ #
+ #       else:
+        warning("Could not create poll (resp !OK)")
+        return None,None
