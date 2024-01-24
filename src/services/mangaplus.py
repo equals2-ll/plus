@@ -1,51 +1,28 @@
-from logging import debug, info, warning, error, exception
-import re
-from datetime import datetime, timedelta
-from typing import Optional, List
-import requests
-import http.client
-
-import services.proto.response_pb2 as response_pb
-from data.models import Manga, Chapter
-
-
-class MangaplusManga:
-    def __init__(self, response_proto):
-        response = response_pb.Response()
-        response.ParseFromString(response_proto)
-        self._detail = response.success.manga_detail
-
-    def get_manga_title_detail(self) -> Optional[Manga]:
-        return Manga(manga_id=self._detail.manga.manga_id, manga_name=self._detail.manga.manga_name,
-                     next_update_time=self._detail.next_timestamp, is_completed=bool(self._detail.non_appearance_info))
-
-
-class MangaplusChapter:
-    def __init__(self, response_proto):
-        response = response_pb.Response()
         response.ParseFromString(response_proto)
         self._detail = response.success.manga_detail
         self._chapters = list()
 
     def get_latest_chapter_detail(self) -> List[Chapter]:
-
-        if len(self._detail.last_chapter_list) > 0:
-            self._chapter_list = self._detail.last_chapter_list
+        if len(self._detail.chapters[-1].last_chapter_list) > 0:
+            self._chapter_list = self._detail.chapters[-1].last_chapter_list
         else:
-            self._chapter_list = self._detail.first_chapter_list
+            self._chapter_list = self._detail.chapters[-1].first_chapter_list
 
         # Check double chapter
         try:
             newest_chapter_release_date = datetime.fromtimestamp(
-                self._chapter_list[-1].start_timestamp)
+                self._chapter_list[-1].start_timestamp
+            )
             for chapter in self._chapter_list:
                 second_newest_chapter_release_date = datetime.fromtimestamp(
-                    chapter.start_timestamp)
+                    chapter.start_timestamp
+                )
 
                 time_difference = (
-                    newest_chapter_release_date-second_newest_chapter_release_date).total_seconds()
+                    newest_chapter_release_date - second_newest_chapter_release_date
+                ).total_seconds()
 
-                if time_difference < 600:                
+                if time_difference < 600:
                     self._process_proto_class_to_model_class(chapter)
 
         except IndexError:
@@ -60,12 +37,20 @@ class MangaplusChapter:
             chapter_number = 0.1
         else:
             try:
-                chapter_number = float(chapter.chapter_number.lstrip('#').replace("-","."))
+                chapter_number = float(
+                    chapter.chapter_number.lstrip("#").replace("-", ".")
+                )
             except ValueError:
                 chapter_number = 1
 
-        self._chapters.append(Chapter(chapter_id=chapter.chapter_id,
-                              chapter_name=chapter.chapter_name, chapter_number=chapter_number, manga_id=self._detail.manga.manga_id))
+        self._chapters.append(
+            Chapter(
+                chapter_id=chapter.chapter_id,
+                chapter_name=chapter.chapter_name,
+                chapter_number=chapter_number,
+                manga_id=self._detail.manga.manga_id,
+            )
+        )
 
 
 class MangaplusUpdated:
@@ -78,7 +63,12 @@ class MangaplusUpdated:
     def get_updated_manga(self, manga_re_edtion_ids) -> List:
         """return new found manga ids"""
         for manga in self._updated.updated_manga_detail:
-            if manga.updated_manga.language == 0 and int(manga.upload_timestamp) > datetime.timestamp(datetime.now()-timedelta(minutes=5)) and manga.updated_manga.manga_id not in manga_re_edtion_ids:
+            if (
+                manga.updated_manga.language == 0
+                and int(manga.upload_timestamp)
+                > datetime.timestamp(datetime.now() - timedelta(minutes=5))
+                and manga.updated_manga.manga_id not in manga_re_edtion_ids
+            ):
                 manga_id = manga.updated_manga.manga_id
                 manga_name = manga.updated_manga.manga_name
                 info(f"New manga found: {manga_id}   {manga_name}")
@@ -87,21 +77,27 @@ class MangaplusUpdated:
         return self._updated_manga_ids
 
 
-class MangaplusService():
+class MangaplusService:
     def __init__(self):
         self._base_api_url = "https://jumpg-webapi.tokyo-cdn.com"
         self._proto_blob = b""
 
-    def request_from_api(self, manga_id='', updated=False):
+    def request_from_api(self, manga_id="", updated=False):
         while True:
             try:
                 if manga_id:
-                    response = requests.get(self._base_api_url+"/api/title_detail", params={
-                                            'lang': 'eng', 'title_id': manga_id}, stream=True)
+                    response = requests.get(
+                        self._base_api_url + "/api/title_detailV3",
+                        params={"lang": "eng", "title_id": manga_id},
+                        stream=True,
+                    )
                 elif updated:
                     response = requests.get(
-                        self._base_api_url+"/api/title_list/updated", params={'lang': 'eng'}, stream=True)
-                
+                        self._base_api_url + "/api/title_list/updated",
+                        params={"lang": "eng"},
+                        stream=True,
+                    )
+
                 break
             except:
                 error("Request API Error")
@@ -116,13 +112,10 @@ class MangaplusService():
             return None
 
     def get_manga_detail(self):
-
         return MangaplusManga(self._proto_blob).get_manga_title_detail()
 
     def get_chapter_detail(self):
-
         return MangaplusChapter(self._proto_blob).get_latest_chapter_detail()
 
     def get_update_new_manga(self, manga_re_edtion_ids):
-
         return MangaplusUpdated(self._proto_blob).get_updated_manga(manga_re_edtion_ids)
